@@ -623,3 +623,63 @@ tr.non-batting {
   color: #ffc700;
 
 }
+.toss-step {
+  display: none;
+}
+
+.toss-step.active {
+  display: block;
+}
+
+/* Bars layout */
+#barsContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 160px;
+  margin-top: 24px;
+}
+
+.toss-bar {
+  width: 80px;
+  color:#000;
+  background: #ffeb3b;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-weight: 300;
+  padding-bottom: 12px;
+}
+
+.selection-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.selection-grid > div {
+  flex: 1;
+  text-align: left;
+}
+
+.selection-grid label {
+  color: white;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.selection-grid select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.selection-grid .underline {
+  height: 6px;
+  background: #ffeb3b;
+  border-radius: 3px;
+  margin-top: 8px;
+}
