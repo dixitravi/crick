@@ -90,34 +90,65 @@ document.addEventListener("DOMContentLoaded", () => {
   const coinToss = document.getElementById("coinToss");
   const lineToss = document.getElementById("lineToss");
 
-  function hardResetTossUI() {
-    coinToss.classList.add("hidden");
-    lineToss.classList.add("hidden");
-    coinToss.style.display = "none";
-    lineToss.style.display = "none";
+	 function hardResetTossUI() {
+	  // ✅ Hide both toss content sections
+	  coinToss.classList.add("hidden");
+	  lineToss.classList.add("hidden");
+	  coinToss.style.display = "none";
+	  lineToss.style.display = "none";
 
-    const flip = document.getElementById("coinFlipArea");
-    const batChoice = document.getElementById("batChoice");
-    const resultText = document.getElementById("tossResultText");
-    const tossBtn = document.getElementById("doCoinToss");
+	  // ✅ RESET Toss Order to STATE 1 (Selection screen)
+	  const tossSelection = document.getElementById("tossSelection");
+	  const tossResult = document.getElementById("tossResult");
+	  const barsContainer = document.getElementById("barsContainer");
 
-    if (flip) {
-      flip.classList.add("hidden");
-      flip.textContent = "";
-    }
+	  if (tossSelection) {
+		tossSelection.classList.add("active");
+		tossSelection.classList.remove("hidden");
+	  }
 
-    if (batChoice) {
-      batChoice.classList.add("hidden");
-      batChoice.style.display = "none";
-    }
+	  if (tossResult) {
+		tossResult.classList.add("hidden");
+		tossResult.classList.remove("active");
+	  }
 
-    if (resultText) resultText.textContent = "";
+	  // ✅ Clear previous result bars (important!)
+	  if (barsContainer) {
+		barsContainer.innerHTML = "";
+	  }
 
-    if (tossBtn) {
-      tossBtn.style.display = "block";
-      tossBtn.disabled = true;
-    }
-  }
+	  // ✅ Reset Coin Toss UI elements
+	  const flip = document.getElementById("coinFlipArea");
+	  const batChoice = document.getElementById("batChoice");
+	  const resultText = document.getElementById("tossResultText");
+	  const tossBtn = document.getElementById("doCoinToss");
+
+	  if (flip) {
+		flip.classList.add("hidden");
+		flip.textContent = "";
+	  }
+
+	  if (batChoice) {
+		batChoice.classList.add("hidden");
+		batChoice.style.display = "none";
+	  }
+
+	  if (resultText) {
+		resultText.textContent = "";
+	  }
+
+	  if (tossBtn) {
+		tossBtn.style.display = "block";
+		tossBtn.disabled = true;
+	  }
+
+	  // ✅ Reset coin selection visuals
+	  document.querySelectorAll(".coin").forEach(btn => {
+		btn.classList.remove("selected");
+	  });
+	}
+
+
 
   function openTossModal() {
     tossModal.classList.remove("hidden");
@@ -238,6 +269,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1200);
     };
   }
+  
+
+document.getElementById("playMatch").onclick = () => {
+  document.getElementById("tossModal").classList.add("hidden");
+  startMatch();
+};
+
+
 
   /*************************************************
    * LINE TOSS (MULTIPLAYER)
@@ -273,56 +312,68 @@ document.addEventListener("DOMContentLoaded", () => {
     lineDropdowns = [];
     lineBars = [];
 
-    teams.forEach(() => {
-      const col = document.createElement("div");
-      const sel = document.createElement("select");
+teams.forEach((team, index) => {
+  const col = document.createElement("div");
 
-      sel.innerHTML =
-        `<option value="">Select</option>` +
-        teams.map(t => `<option value="${t.name}">${t.name}</option>`).join("");
+  col.innerHTML = `
+    <label>Player ${index + 1}</label>
+    <select>
+      <option value="">Select</option>
+      ${teams.map(t => `<option value="${t.name}">${t.name}</option>`).join("")}
+    </select>
+    <div class="underline"></div>
+  `;
 
-      sel.onchange = updateLineTossDropdowns;
+  const select = col.querySelector("select");
+  select.onchange = updateLineTossDropdowns;
 
-      const bar = document.createElement("div");
-      bar.className = "line";
-      bar.style.height = "60px";
+  container.appendChild(col);
+  lineDropdowns.push(select);
+});
 
-      col.appendChild(sel);
-      col.appendChild(bar);
-      container.appendChild(col);
 
-      lineDropdowns.push(sel);
-      lineBars.push(bar);
-    });
+  // ✅ ✅ ADD BELOW (VERY IMPORTANT)
+  document.getElementById("tossSelection").classList.add("active");
+  document.getElementById("tossResult").classList.add("hidden");
 
     showBtn.onclick = revealLines;
   }
 
-  function revealLines() {
-    const showBtn = document.getElementById("showLines");
-    showBtn.style.display = "none";
+	function revealLines() {
+	  const selection = document.getElementById("tossSelection");
+	  const result = document.getElementById("tossResult");
+	  const barsContainer = document.getElementById("barsContainer");
 
-    document.getElementById("orderResult").innerHTML = "";
+	  if (!selection || !result || !barsContainer) {
+		console.error("Toss Order: Missing layout elements");
+		return;
+	  }
 
-    const order = lineBars.map((bar, i) => {
-      const h = Math.random() * 120 + 60;
-      bar.style.height = h + "px";
-      return { name: lineDropdowns[i].value, h };
-    });
+	  selection.classList.remove("active");
+	  selection.classList.add("hidden");
+	  result.classList.remove("hidden");
+	  result.classList.add("active");
 
-    order.sort((a, b) => b.h - a.h);
-    teams = order.map(o => teams.find(t => t.name === o.name));
+	  barsContainer.innerHTML = "";
 
-    order.forEach((o, i) => {
-      document.getElementById("orderResult")
-        .innerHTML += `<p>${i + 1}. ${o.name}</p>`;
-    });
+	  const order = lineDropdowns.map((d) => ({
+		name: d.value,
+		height: Math.random() * 80 + 60
+	  }));
 
-    const playBtn = document.createElement("button");
-    playBtn.textContent = "PLAY";
-    playBtn.onclick = startMatch;
-    lineToss.appendChild(playBtn);
-  }
+	  order.sort((a, b) => b.height - a.height);
+
+	  teams = order.map(o => teams.find(t => t.name === o.name));
+
+	  order.forEach(o => {
+		const bar = document.createElement("div");
+		bar.className = "toss-bar";
+		bar.style.height = `${o.height}px`;
+		bar.textContent = o.name;
+		barsContainer.appendChild(bar);
+	  });
+	}
+
 
   /*************************************************
    * MATCH + GAMEPLAY
