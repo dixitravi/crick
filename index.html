@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kids Cricket Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= SETUP SCREEN ================= -->
+<section id="setup" class="screen active">
+  <h1>🏏 Kids Cricket Game</h1>
+
+  <div class="card">
+
+    <!-- ✅ SAME ROW -->
+    <div class="row">
+		<div>
+			<label>Players    
+			<span class="info-icon" title="Number of players/teams wants to play match">ℹ️</span>
+			</label>
+			<select id="playerCount">
+			  <option value="2">2</option>
+			  <option value="3">3</option>
+			  <option value="4">4</option>
+			  <option value="5">5</option>
+			  <option value="6">6</option>
+			</select>
+		</div>
+		<div>
+			<label>
+			  Batsman
+			  <span class="info-icon" title="Number of batsman in a team">ℹ️</span>
+			</label>
+			<select id="batsmenCount">
+			  <option value="2">2</option>
+			  <option value="3">3</option>
+			  <option value="4">4</option>
+			  <option value="5">5</option>
+			</select>
+		</div>
+		<div>
+			<label>Overs</label>
+			<select id="oversCount">
+			  <!-- JS will populate 1–20 -->
+			</select>
+		</div>
+	</div>
+    <div id="playerNames"></div>
+    <button id="startGame">START MATCH</button>
+  </div>
+</section>
+
+<!-- ================= GAME SCREEN ================= -->
+<section id="game" class="screen">
+  <h2 id="teamLabel"></h2>
+
+  <div id="scoreboards">
+    <div class="tv-scoreboard active" id="activeScoreboard">
+      <div class="score-top-bar">
+        <div class="team-flag"></div>
+        <div class="team-title">
+          <div class="team-name" id="scoreTeamName"></div>
+          <div class="tournament-name">ICC T20 World Cup 2026</div>
+        </div>
+        <div class="score-columns">
+          <span>RUNS</span>
+          <span>BALLS</span>
+        </div>
+      </div>
+
+      <table class="score-table">
+        <tbody id="scoreBody"></tbody>
+        <tfoot id="scoreFooter"></tfoot>
+      </table>
+    </div>
+
+    <div id="completedScoreboards"></div>
+  </div>
+
+  <button id="hitBtn">HIT 🏏</button>
+</section>
+
+<!-- ================= TOSS MODAL ================= -->
+<div id="tossModal" class="modal hidden">
+
+  <!-- COIN TOSS -->
+  <div id="coinToss" class="modal-content hidden">
+	<button class="modal-close" data-close="tossModal">✕</button>
+    <h2>🪙 Coin Toss</h2>
+    <select id="tossCaller"></select>
+
+    <div class="coin-options">
+      <button class="coin" data-side="HEADS">HEADS</button>
+      <button class="coin" data-side="TAILS">TAILS</button>
+    </div>
+
+    <button id="doCoinToss">TOSS</button>
+    <div id="coinFlipArea" class="hidden">🪙 Flipping…</div>
+    <p id="tossResultText"></p>
+
+    <div id="batChoice" class="hidden" style="display:none;">
+      <button id="batFirst">Bat First</button>
+      <button id="batLater">Bat Later</button>
+    </div>
+  </div>
+
+  <!-- LINE TOSS -->
+  <div id="lineToss" class="modal-content hidden">
+	<button class="modal-close" data-close="tossModal">✕</button>
+    <h2>🎯 Toss Order</h2>
+    <div id="linesContainer"></div>
+    <button id="showLines">SHOW</button>
+    <div id="orderResult"></div>
+  </div>
+</div>
+
+<div id="pitchResult" class="pitch-result">🏏</div>
+
+<!-- ================= WINNER MODAL ================= -->
+<div id="winnerModal" class="modal hidden">
+  <h2 id="winnerText"></h2>
+  <div class="winner-actions stacked">
+    <button id="restartGame">Restart</button>
+    <button id="newGame">New Game</button>
+  </div>
+</div>
+<!-- ================= NEXT TEAM MODAL ================= -->
+<div id="nextTeamModal" class="modal hidden">
+  <div class="modal-content">
+    <h2 id="nextTeamText"></h2>
+    <button id="nextTeamOk">OK</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
