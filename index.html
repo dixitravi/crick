@@ -108,13 +108,24 @@
   </div>
 
   <!-- LINE TOSS -->
-  <div id="lineToss" class="modal-content hidden">
-	<button class="modal-close" data-close="tossModal">✕</button>
-    <h2>🎯 Toss Order</h2>
-    <div id="linesContainer"></div>
-    <button id="showLines">SHOW</button>
-    <div id="orderResult"></div>
-  </div>
+	<div id="lineToss" class="modal-content hidden">
+	  <button class="modal-close" data-close="tossModal">✕</button>
+	  <h2>🎯 Toss Order</h2>
+
+	  <!-- STATE 1: Selection -->
+	  <div id="tossSelection" class="toss-step active">
+		<div id="linesContainer" class="selection-grid"></div>
+		<button id="showLines" disabled>SHOW</button>
+	  </div>
+
+	  <!-- STATE 2: Result -->
+	  <div id="tossResult" class="toss-step hidden">
+		<div id="barsContainer"></div>
+		<button id="playMatch">PLAY</button>
+	  </div>
+	</div>
+
+
 </div>
 
 <div id="pitchResult" class="pitch-result">🏏</div>
